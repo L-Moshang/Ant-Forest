@@ -9,7 +9,7 @@ let fileUtils = singletonRequire('FileUtils')
 let automator = singletonRequire('Automator')
 let widgetUtils = singletonRequire('WidgetUtils')
 let unlocker = require('../lib/Unlock.js')
-let { openFriendHome, doWaterFriend, openAndWaitForPersonalHome } = require('./waterFriend.js')
+let { openFriendHome, doWaterFriend, openAndWaitForPersonalHome, getSignReward } = require('./waterFriend.js')
 config.not_lingering_float_window = true
 runningQueueDispatcher.addRunningTask()
 // 注册自动移除运行中任务
@@ -56,7 +56,8 @@ if (config.accounts && config.accounts.length > 1) {
     logUtils.debugInfo(['赠送对象昵称为：{}', targetSendName])
     engines.execScriptFile(source, { path: source.substring(0, source.lastIndexOf('/')), arguments: { executeByAccountChanger: true, executorSource: engines.myEngine().getSource() + '', targetSendName: targetSendName } })
     commonFunctions.commonDelay(2.5, '执行能量雨[', true, true)
-    if (config.watering_main_account && config.watering_main_at === 'rain' && account !== config.main_account) {
+    if (config.watering_main_account && config.watering_main_at === 'rain') {
+      getSignReward()
       if (openFriendHome()) {
         doWaterFriend()
       }

@@ -77,7 +77,7 @@ function openFriendHome (inPersonalHome) {
 }
 
 function openFriendHomeByWidget () {
-  let target = widgetUtils.widgetGetOne(config.main_account_username)
+  let target = widgetUtils.widgetGetOne('_陆九陌')
   if (target) {
     target.click()
   } else {
@@ -158,14 +158,11 @@ function doWaterFriend () {
   }
 }
 // 每日签到奖励
-function getSignReward () {
+function getSignReward () { 
+  openAndWaitForPersonalHome()
   floatyInstance.setFloatyText('准备校验是否有奖励')
-  let screen = commonFunctions.checkCaptureScreenPermission()
-  if (screen && config.image_config.sign_reward_icon) {
-    let collect = OpenCvUtil.findByImageSimple(images.cvtColor(images.grayscale(screen), 'GRAY2BGRA'), images.fromBase64(config.image_config.sign_reward_icon))
-    if (collect) {
-      floatyInstance.setFloatyInfo({ x: collect.centerX(), y: collect.centerY() }, '点击奖励按钮')
-      automator.click(collect.centerX(), collect.centerY())
+  floatyInstance.setFloatyInfo({ x: 505, y: 1635 }, '点击奖励按钮')
+      automator.click(505, 1635)
       sleep(1000)
       let getRewards = widgetUtils.widgetGetAll('(立即)?领取')
       if (getRewards && getRewards.length > 0) {
@@ -180,9 +177,4 @@ function getSignReward () {
       commonFunctions.setRewardCollected()
       automator.click(config.device_width * 0.2, config.device_width * 0.3)
       sleep(200)
-    } else {
-      floatyInstance.setFloatyText('未找到奖励按钮')
-    }
-    sleep(500)
-  }
 }
